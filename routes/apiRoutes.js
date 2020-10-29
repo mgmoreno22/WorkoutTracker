@@ -40,11 +40,4 @@ module.exports = function(app) {
                 res.json(err)
             })
     })
-
-    app.put("/api/workouts/:id", function({body, params}, res) {
-        db.Workout.findBYIdAndUpdate(
-            params.id,
-
-        )
-    })
 }
