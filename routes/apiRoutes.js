@@ -40,4 +40,26 @@ module.exports = function(app) {
                 res.json(err)
             })
     })
+
+    app.put("/api/workouts/:id", function({params}, res) {
+        db.Workout.update(
+            {
+                _id: mongojs.ObjectId(params.id)
+            },
+            {
+                $set: {
+                    read: true
+                }
+            },
+            (error, edit) => {
+                if (error) {
+                    console.log(error);
+                    res.send(error);
+                } else {
+                    console.log(edit)
+                    res.send(edited)
+                }
+            }
+        )
+    })
 }
