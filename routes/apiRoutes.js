@@ -41,25 +41,20 @@ module.exports = function(app) {
             })
     })
 
-    app.put("/api/workouts/:id", function({params}, res) {
+    app.put("/api/workouts/:id", (req, res) => {
         db.Workout.update(
             {
-                _id: mongojs.ObjectId(params.id)
+                _id: mongojs.ObjectId(req.params.id)
             },
             {
-                $set: {
-                    read: true
+                $push: {
+                    exercises: req.body
                 }
-            },
-            (error, edit) => {
-                if (error) {
-                    console.log(error);
-                    res.send(error);
-                } else {
-                    console.log(edit)
-                    res.send(edited)
-                }
-            }
-        )
+            },    
+        ).then(dbWorkout => {
+            res.json(dbWorkout)
+        }).catch(err => {
+            res.json(err)
+        })
     })
 }
