@@ -20,7 +20,7 @@ module.exports = function (app) {
         console.log(req.body)
         console.log(req.params)
         console.log("----------------------")
-        db.Workout.create({})
+        db.Workout.create(req.body)
             .then(dbWorkout => {
                 res.json(dbWorkout);
             })
@@ -64,8 +64,7 @@ module.exports = function (app) {
         console.log("----------------------")
         db.Workout.findByIdAndUpdate(
             params.id,
-            {$push: { exercises: body}},
-            {new: true, runvalidators: true}
+            {$push: { exercises: body}}
         ).then(dbWorkout => {
             res.json(dbWorkout)
         }).catch(err => {
