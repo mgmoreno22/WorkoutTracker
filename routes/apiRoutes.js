@@ -2,6 +2,9 @@ const db = require("../models");
 
 module.exports = function(app) {
     app.get("/api/workouts", (req, res) => {
+        console.log("~~~~~~~~~~~~~~~~~~")
+        console.log(req.body)
+        console.log(req.params)
         db.Workout.find({})
             .then(dbWorkout => {
                 res.json(dbWorkout);
@@ -41,20 +44,17 @@ module.exports = function(app) {
             })
     })
 
-    app.put("/api/workouts/:id", (req, res) => {
-        db.Workout.update(
-            {
-                _id: mongojs.ObjectId(req.params.id)
-            },
-            {
-                $push: {
-                    exercises: req.body
-                }
-            },    
-        ).then(dbWorkout => {
-            res.json(dbWorkout)
-        }).catch(err => {
-            res.json(err)
-        })
+    app.put("/api/workouts/:id", function ({ body, params }, res) {
+        console.log("******************")
+        console.log(body)
+        console.log(params)
+        db.Workout.findByIdAndUpdate(
+            params.id,
+            {$push: { exercises: body}},
+            {new: true, runvalidators: true}).then(dbWorkout => {
+                res.json(dbWorkout)
+            }).catch(err => {
+                res.json(err)
+            })
     })
 }
